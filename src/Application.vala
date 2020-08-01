@@ -49,17 +49,17 @@ public class MyApp : Gtk.Application {
         header.set_title ("Simple Stocks");
         main_window.set_titlebar (header);
 
-        var grid = new CardGrid ();
+        var flow = new FlowBox ();
 
-        var cards = new Cards (grid);
+        var cards = new Cards (flow);
         cards.AddCard ("APPL");
         cards.AddCard ("empty");
         
-        Gtk.ScrolledWindow scroll_view = new Gtk.ScrolledWindow (null, null);
+        /*Gtk.ScrolledWindow scroll_view = new Gtk.ScrolledWindow (null, null);
         scroll_view.hscrollbar_policy = Gtk.PolicyType.NEVER;
-        scroll_view.add (grid);
+        scroll_view.add (grid);*/
         
-        main_window.add (scroll_view);
+        main_window.add (flow);
         main_window.show_all ();
     }
 
