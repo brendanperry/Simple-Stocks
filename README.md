@@ -2,7 +2,7 @@
 A simple stocks app for Elementary OS
 Vala
 
-install vala and valac as well as any additional libraries (more in depth instructions to come on this) \
+install vala and valac as well as any additional libraries (more in depth instructions to come on this)
 
 build app
 move to project src folder \
