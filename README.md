@@ -1,6 +1,5 @@
 # stocks
-A simple stocks app for Elementary OS
-Vala
+A simple stocks app for Elementary OS \
 
 install vala and valac as well as any additional libraries (more in depth instructions to come on this)
 
