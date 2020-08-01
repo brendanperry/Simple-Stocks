@@ -19,6 +19,8 @@
 * Authored by: Author <bperry@hey.com>
 */
 
+const string GETTEXT_PACKAGE = "...";
+
 public class MyApp : Gtk.Application {
     public MyApp () {
         Object (
@@ -28,24 +30,36 @@ public class MyApp : Gtk.Application {
     }
 
     protected override void activate () {
-        var button_hello = new Gtk.Button.with_label ("_(Click me!)") {
-            margin = 12
-        };
+        var css_provider = new Style().GetCssProvider ();
 
-        button_hello.clicked.connect (() => {
-            button_hello.label = "_(Hello World!)";
-            button_hello.sensitive = false;
-        });
+        Gtk.StyleContext.add_provider_for_screen (
+            Gdk.Screen.get_default (),
+            css_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        );
 
         var main_window = new Gtk.ApplicationWindow(this) {
-            default_height = 300,
-            default_width = 300,
-            title = "_(Hello World)"
+            default_height = 600,
+            default_width = 600,
+            title = _("Stocks")
         };
 
-        main_window.add (button_hello);
+        var header = new Gtk.HeaderBar ();
+        header.set_show_close_button (true);
+        main_window.set_titlebar (header);
 
+        var window = new StockCard ("AAPL");
+        var window1 = new StockCard ("MSFT");
+
+        var grid = new CardGrid ();
+        grid.AttachFirst (window);
+        grid.Attach (window1);
+
+        main_window.add (grid);
         main_window.show_all ();
+
+        window.UpdateCard ();
+        window1.UpdateCard ();
     }
 
     public static int main (string[] args) {
