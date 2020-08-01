@@ -38,28 +38,29 @@ public class MyApp : Gtk.Application {
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         );
 
-        var main_window = new Gtk.ApplicationWindow(this) {
-            default_height = 600,
-            default_width = 600,
-            title = _("Stocks")
+        var main_window = new Gtk.ApplicationWindow (this) {
+            title = _("Stocks"),
+            resizable = false,
+            default_height = 480
         };
 
         var header = new Gtk.HeaderBar ();
         header.set_show_close_button (true);
+        header.set_title ("Simple Stocks");
         main_window.set_titlebar (header);
 
-        var window = new StockCard ("AAPL");
-        var window1 = new StockCard ("MSFT");
-
         var grid = new CardGrid ();
-        grid.AttachFirst (window);
-        grid.Attach (window1);
 
-        main_window.add (grid);
+        var cards = new Cards (grid);
+        cards.AddCard ("APPL");
+        cards.AddCard ("empty");
+        
+        Gtk.ScrolledWindow scroll_view = new Gtk.ScrolledWindow (null, null);
+        scroll_view.hscrollbar_policy = Gtk.PolicyType.NEVER;
+        scroll_view.add (grid);
+        
+        main_window.add (scroll_view);
         main_window.show_all ();
-
-        window.UpdateCard ();
-        window1.UpdateCard ();
     }
 
     public static int main (string[] args) {

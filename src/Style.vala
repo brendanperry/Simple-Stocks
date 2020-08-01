@@ -38,18 +38,8 @@ public class Style {
         return (
         """
             .card {
-                background-color: gray;
-                margin: 50px;
-                padding: 10px;
                 border-radius: 5px;
-            }
-
-            .main {
-                
-            }
-
-            label {
-                color: black;
+                padding: 30px;
             }
         """
         );

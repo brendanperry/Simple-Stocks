@@ -37,9 +37,9 @@ public class GetApiData {
         session.queue_message (message, () => {
             if (message.status_code == Soup.Status.OK) {
                 current_price = GetCurrentPrice (message);
-                UpdateCardsWithPrice (currentPrice);
+                UpdateCardsWithPrice (current_price);
             } else {
-                UpdateCardsWithFailure ();
+                DisplayErrorInfoBar ();
             }
         });
         
@@ -60,17 +60,11 @@ public class GetApiData {
         return (str);
     }
     
-    private void UpdateCardsWithFailure () {
-        print ("We failed bois");
-        /*
-            This will set the card to a failed state
-        */
+    private void DisplayErrorInfoBar () {
+        print ("Unable to Connect");
     }
     
     private void UpdateCardsWithPrice (string price) {
         print (price);
-        /*
-            This will update the cards once the information has loaded from the api
-        */
     }
 }

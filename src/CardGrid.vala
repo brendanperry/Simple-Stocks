@@ -21,14 +21,29 @@
 
 public class CardGrid : Gtk.Grid {
     private Gtk.Widget lastWidget;
+    private bool attach_left = true;
+    private int rows = 0;
     
-    public void AttachFirst (Gtk.Widget widget) {
-        this.attach (widget, 0, 0, 1, 1);
-        lastWidget = widget;
+    public CardGrid () {
+        set_margin_start (40);
+        set_margin_end (40);
+        set_margin_top (40);
+        set_margin_bottom (40);
+        set_column_spacing (40);
+        set_row_spacing (40);
     }
     
     public void Attach (Gtk.Widget widget) {
-        this.attach_next_to (widget, lastWidget, Gtk.PositionType.RIGHT, 1, 1);
-        lastWidget = widget;
+        if (attach_left) {
+            this.attach (widget, 0, rows, 1, 1);
+            attach_left = false;
+        } else {
+            this.attach (widget, 1, rows++, 1, 1);
+            attach_left = true;
+        }
+    }
+    
+    public void RemoveLast () {
+        
     }
 }
