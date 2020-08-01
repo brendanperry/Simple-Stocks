@@ -24,7 +24,6 @@ i18n.merge_file(
     install_dir: join_paths(get_option('datadir'), 'applications')
 )
 
-#Translate and install our .appdata file
 i18n.merge_file(
     input: join_paths('data', meson.project_name() + '.appdata.xml.in'),
     output: meson.project_name() + '.appdata.xml',
