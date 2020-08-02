@@ -19,7 +19,7 @@
 * Authored by: Author <bperry@hey.com>
 */
 
-public class CardGrid : Gtk.FlowBox {
+public class CardGrid : Gtk.Grid {
     private Gtk.Widget lastWidget;
     private bool attach_left = true;
     private int rows = 0;
@@ -34,11 +34,6 @@ public class CardGrid : Gtk.FlowBox {
     }
     
     public void Attach (Gtk.Widget widget) {
-        add (widget);
-    }
-    
-    /*
-    public void Attach (Gtk.Widget widget) {
         if (attach_left) {
             this.attach (widget, 0, rows, 1, 1);
             attach_left = false;
@@ -48,7 +43,8 @@ public class CardGrid : Gtk.FlowBox {
         }
     }
     
-    public void RemoveLast () {
-        
-    }*/
+    public void Reset () {
+        rows = 0;
+        attach_left = true;
+    }
 }

@@ -40,6 +40,12 @@ public class Style {
             .card {
                 border-radius: 5px;
                 padding: 30px;
+                box-shadow: 0px 0px 0px 0px;
+                border: 2px solid black;
+            }
+            
+            .boxy {
+                border: 1px solid black;
             }
         """
         );

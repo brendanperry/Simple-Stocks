@@ -24,65 +24,81 @@ public class StockCard: Gtk.Box {
     private Gtk.Label priceLabel;
     private Gtk.Label percentageLabel;
     private GetApiData api;
+    private Gtk.Entry entry;
 
     public StockCard(string ticker, Cards cards) {
         set_orientation (Gtk.Orientation.VERTICAL);
         this.get_style_context ().add_class ("card");
-        
+
         if (ticker == "empty") {
             CreateEmptyCard (cards);
         } else {
             CreateNewCard (ticker, cards);
         }
     }
-    
+
     public void UpdateCard () {
         api = new GetApiData ();
         price = api.HttpGet ("AAPL", "key");
         priceLabel.set_label (price);
     }
-    
+
     private void CreateEmptyCard (Cards cards) {
         set_spacing (8);
-        
+
         var label = new Gtk.Label ("Add New");
         add (label);
-        
-        var entry = new Gtk.Entry();
-        
+        label.show ();
+
+        entry = new Gtk.Entry();
+
+        entry.button_press_event.connect (() => {
+            entry.is_focus = true;
+            return true;
+        });
+
         entry.max_length = 4;
         entry.set_max_width_chars (12);
         entry.set_width_chars (12);
         entry.xalign = (float) 0.5;
-        
+        entry.show ();
+
         entry.activate.connect (() => {
-           cards.AddCard (entry.text);
-           cards.AddCard ("Empty");
+           string text = entry.text;
+           cards.Remove (cards.GetLength () - 1);
+           cards.AddCard (text);
+           cards.AddCard ("empty");
         });
-        
+
         add (entry);
     }
-    
+
     private void CreateNewCard (string ticker, Cards cards) {
         set_spacing (10);
         price = "$1000.00"; // Get Real Price soon
-    
+
         var tickerLabel = new Gtk.Label (ticker);
         add (tickerLabel);
-        
+
         priceLabel = new Gtk.Label (price);
         percentageLabel = new Gtk.Label ("+3.0%");
-        
+
         var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
         box.set_spacing (20);
         box.add (priceLabel);
         box.add (percentageLabel);
-        
+
         tickerLabel.show ();
         priceLabel.show ();
         percentageLabel.show ();
         box.show ();
-        
+
         add (box);
+    }
+
+    public void SetEntryFocus (string ticker) {
+        if (ticker == "empty") {
+            entry.is_focus = true;
+        }
     }
 }
