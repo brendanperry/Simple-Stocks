@@ -20,7 +20,7 @@
 */
 
 public class GetApiData {
-    public string HttpGet (string ticker, string key) {
+    public void HttpGet (StockCard card, string ticker, string key) {
         key = "Tpk_e1eb49050d7c403496493e757960f5f2"; // sandbox key
         var session = new Soup.Session ();
         var api = "https://sandbox.iexapis.com/stable/stock/XOM/quote?token=" + key;
@@ -31,40 +31,64 @@ public class GetApiData {
         );
 
         message.request_headers.append ("Content-Type", "application/json; charset=utf-8");
-
-        var current_price = "Loading";
         
         session.queue_message (message, () => {
             if (message.status_code == Soup.Status.OK) {
-                current_price = GetCurrentPrice (message);
-                UpdateCardsWithPrice (current_price);
+                var current_price = GetCurrentPrice (message);
+                UpdateCardsWithPrice (card, current_price);
             } else {
                 DisplayErrorInfoBar ();
             }
         });
-        
-        return current_price;
     }
 
     private string GetCurrentPrice (Soup.Message msg) {
         var parser = new Json.Parser ();
-        parser.load_from_data ( (string) msg.response_body.data);
+        parser.load_from_data ((string) msg.response_body.data);
 
         var obj = parser.get_root ().get_object ();
-
+        
         double price_decimal = obj.get_double_member ("latestPrice");
 
-        char[] buf = new char [double.DTOSTR_BUF_SIZE];
+        char[] buf = new char [10];
         string str = price_decimal.to_str (buf);
+        
+        RoundPrice (str);
 
-        return (str);
+        return (RoundPrice (str));
     }
     
     private void DisplayErrorInfoBar () {
         print ("Unable to Connect");
     }
     
-    private void UpdateCardsWithPrice (string price) {
-        print (price);
+    private string RoundPrice (string price) {
+        int i = 0;
+        char[] newString = new char[10];
+        
+        while (price.get_char (i) != '.') {
+            
+            newString[i] = (char) price.get_char (i);
+            i++;
+        }
+        
+        newString[i] = '.';
+        newString[i + 1] = (char) price.get_char (i + 1);
+        newString[i + 2] = (char) price.get_char (i + 2);
+        
+        return ((string) newString);
+    }
+    
+    private void UpdateCardsWithPrice (StockCard card, string price) {
+        card.SetPrice (price);
     }
 }
+
+/*
+round price
+make sure all stocks can be added like BRK-A
+check if stocks are valid or not, handle get req probably
+popup for when connection fails
+style everything up
+add dark mode
+*/

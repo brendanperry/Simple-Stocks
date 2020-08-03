@@ -52,7 +52,6 @@ public class MyApp : Gtk.Application {
         var grid = new CardGrid ();
 
         var cards = new Cards (grid);
-        cards.AddCard ("APPL");
         cards.AddCard ("empty");
         
         Gtk.ScrolledWindow scroll_view = new Gtk.ScrolledWindow (null, null);

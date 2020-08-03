@@ -20,7 +20,6 @@
 */
 
 public class CardGrid : Gtk.Grid {
-    private Gtk.Widget lastWidget;
     private bool attach_left = true;
     private int rows = 0;
     

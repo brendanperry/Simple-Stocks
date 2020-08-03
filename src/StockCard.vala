@@ -20,15 +20,18 @@
 */
 
 public class StockCard: Gtk.Box {
-    private string price;
+    private Gtk.Label tickerLabel;
     private Gtk.Label priceLabel;
     private Gtk.Label percentageLabel;
     private GetApiData api;
     private Gtk.Entry entry;
+    private int index;
 
     public StockCard(string ticker, Cards cards) {
         set_orientation (Gtk.Orientation.VERTICAL);
         this.get_style_context ().add_class ("card");
+        
+        api = new GetApiData ();
 
         if (ticker == "empty") {
             CreateEmptyCard (cards);
@@ -37,18 +40,12 @@ public class StockCard: Gtk.Box {
         }
     }
 
-    public void UpdateCard () {
-        api = new GetApiData ();
-        price = api.HttpGet ("AAPL", "key");
-        priceLabel.set_label (price);
-    }
-
     private void CreateEmptyCard (Cards cards) {
         set_spacing (8);
 
-        var label = new Gtk.Label ("Add New");
-        add (label);
-        label.show ();
+        tickerLabel = new Gtk.Label ("Add New");
+        add (tickerLabel);
+        tickerLabel.show ();
 
         entry = new Gtk.Entry();
 
@@ -75,13 +72,12 @@ public class StockCard: Gtk.Box {
 
     private void CreateNewCard (string ticker, Cards cards) {
         set_spacing (10);
-        price = "$1000.00"; // Get Real Price soon
 
-        var tickerLabel = new Gtk.Label (ticker);
+        tickerLabel = new Gtk.Label (ticker);
         add (tickerLabel);
 
-        priceLabel = new Gtk.Label (price);
-        percentageLabel = new Gtk.Label ("+3.0%");
+        priceLabel = new Gtk.Label ("$0.00");
+        percentageLabel = new Gtk.Label ("+0.0%");
 
         var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
         box.set_spacing (20);
@@ -100,5 +96,23 @@ public class StockCard: Gtk.Box {
         if (ticker == "empty") {
             entry.is_focus = true;
         }
+    }
+    
+    public void SetIndex (int index) {
+        this.index = index;
+    }
+    
+    public int GetIndex () {
+        return index;
+    }
+    
+    public void UpdatePrice () {
+        if (tickerLabel.get_text () != "Add New") {
+            api.HttpGet (this, tickerLabel.get_text (), "key");
+        }
+    }
+    
+    public void SetPrice (string price) {
+        priceLabel.set_text ("$" + price);
     }
 }
