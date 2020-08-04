@@ -1,12 +1,11 @@
 public class Cards {
     private Array<StockCard> cards;
-    private Array<Gtk.EventBox> boxes;
     CardGrid grid;
+    MyApp app;
     
-    public Cards (CardGrid grid) {
+    public Cards (CardGrid grid, MyApp app) {
         cards = new Array<StockCard> ();
-        boxes = new Array<Gtk.EventBox>();
-        
+        this.app = app;
         this.grid = grid;
     }
 
@@ -19,34 +18,10 @@ public class Cards {
             new_card.SetIndex ((int) cards.length);
         }
         
-        var event_box = new Gtk.EventBox ();
-        
-        event_box.button_press_event.connect (() => {
-            if(ticker != "empty") {
-                var pop = new Gtk.Popover (new_card);
-                pop.set_modal (true);
-                
-                var button = new Gtk.Button.with_label ("Remove");
-                
-                button.clicked.connect (() => {
-			        Remove (new_card.GetIndex ());
-		        });
-		        
-                pop.add (button);
-                pop.show_all ();
-            }
-            
-            return true;
-        });
-        
         new_card.show ();
-        event_box.add (new_card);
-        
-        event_box.show ();
         
         cards.append_val (new_card);
-        boxes.append_val (event_box);
-        grid.Attach (event_box);
+        grid.Attach (new_card);
         new_card.SetEntryFocus (ticker);
         new_card.UpdatePrice ();
     }
@@ -59,19 +34,22 @@ public class Cards {
     
     public void Remove (int index) {    
         for (int i = 0; i < cards.length; i++) {
-            grid.remove (boxes.index (i));
+            grid.remove (cards.index (i));
         }
         
         grid.Reset ();
         cards.remove_index (index);
-        boxes.remove_index (index);
         
         for (int i = 0; i < cards.length; i++) {
-            grid.Attach (boxes.index (i));
+            grid.Attach (cards.index (i));
         } 
     }
     
     public int GetLength () {
         return (int) cards.length;
+    }
+    
+    public MyApp GetApp () {
+        return app;
     }
 }

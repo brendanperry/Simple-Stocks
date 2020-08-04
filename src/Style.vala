@@ -37,15 +37,21 @@ public class Style {
     private string GetCss () {
         return (
         """
-            .card {
-                border-radius: 5px;
-                padding: 30px;
-                box-shadow: 0px 0px 0px 0px;
-                border: 2px solid black;
+            .main {
+                background-color: white;
             }
             
-            .boxy {
-                border: 1px solid black;
+            .card {
+                border-radius: 5px;
+                background-color: #FDF6E3;
+            }
+            
+            .ticker {
+                font-weight: bold;
+            }
+            
+            .event {
+                padding: 30px;
             }
         """
         );

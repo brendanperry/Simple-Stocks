@@ -24,13 +24,15 @@ public class StockCard: Gtk.Box {
     private Gtk.Label priceLabel;
     private Gtk.Label percentageLabel;
     private GetApiData api;
+    private Cards cards;
     private Gtk.Entry entry;
     private int index;
 
     public StockCard(string ticker, Cards cards) {
+        this.cards = cards;
         set_orientation (Gtk.Orientation.VERTICAL);
         this.get_style_context ().add_class ("card");
-        
+
         api = new GetApiData ();
 
         if (ticker == "empty") {
@@ -41,10 +43,18 @@ public class StockCard: Gtk.Box {
     }
 
     private void CreateEmptyCard (Cards cards) {
-        set_spacing (8);
-
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.get_style_context ().add_class ("event");
+        
+        box.set_spacing (8);
+        
+        var ticker_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         tickerLabel = new Gtk.Label ("Add New");
-        add (tickerLabel);
+        ticker_box.add (tickerLabel);
+        ticker_box.get_style_context ().add_class ("ticker");
+        ticker_box.show ();
+        
+        box.add (ticker_box);
         tickerLabel.show ();
 
         entry = new Gtk.Entry();
@@ -54,7 +64,7 @@ public class StockCard: Gtk.Box {
             return true;
         });
 
-        entry.max_length = 4;
+        entry.max_length = 6;
         entry.set_max_width_chars (12);
         entry.set_width_chars (12);
         entry.xalign = (float) 0.5;
@@ -67,29 +77,63 @@ public class StockCard: Gtk.Box {
            cards.AddCard ("empty");
         });
 
-        add (entry);
+        box.add (entry);
+        box.show ();
+        
+        add (box);
     }
 
     private void CreateNewCard (string ticker, Cards cards) {
-        set_spacing (10);
-
+        var event_box = new Gtk.EventBox ();
+        
+        event_box.button_press_event.connect (() => {
+            var pop = new Gtk.Popover (this);
+            pop.set_modal (true);
+            
+            var button = new Gtk.Button.with_label ("Remove");
+            
+            button.clicked.connect (() => {
+		        cards.Remove (GetIndex ());
+	        });
+	        
+            pop.add (button);
+            pop.show_all ();
+            
+            return true;
+        });
+        
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.get_style_context ().add_class ("event");
+        event_box.add (box);
+        
+        box.set_spacing (10);
+        
+        var ticker_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         tickerLabel = new Gtk.Label (ticker);
-        add (tickerLabel);
+        ticker_box.add (tickerLabel);
+        ticker_box.get_style_context ().add_class ("ticker");
+        ticker_box.show ();
+        
+        box.add (ticker_box);
 
         priceLabel = new Gtk.Label ("$0.00");
-        percentageLabel = new Gtk.Label ("+0.0%");
+        percentageLabel = new Gtk.Label ("+0.00%");
 
-        var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-        box.set_spacing (20);
-        box.add (priceLabel);
-        box.add (percentageLabel);
+        var box_price = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+        box_price.set_spacing (20);
+        box_price.pack_start (priceLabel, false, false, 0);
+        box_price.pack_end (percentageLabel, false, false, 0);
 
         tickerLabel.show ();
         priceLabel.show ();
         percentageLabel.show ();
+        box_price.show ();
         box.show ();
+        event_box.show ();
 
-        add (box);
+        box.add (box_price);
+        
+        add (event_box);
     }
 
     public void SetEntryFocus (string ticker) {
@@ -97,22 +141,34 @@ public class StockCard: Gtk.Box {
             entry.is_focus = true;
         }
     }
-    
+
     public void SetIndex (int index) {
         this.index = index;
     }
-    
+
     public int GetIndex () {
         return index;
     }
     
+    public string GetPrice () {
+        return priceLabel.get_text ();
+    }
+    
+    public void UpdatePercentage (string percent) {
+        percentageLabel.set_text (percent);
+    }
+
     public void UpdatePrice () {
         if (tickerLabel.get_text () != "Add New") {
             api.HttpGet (this, tickerLabel.get_text (), "key");
         }
     }
-    
+
     public void SetPrice (string price) {
         priceLabel.set_text ("$" + price);
+    }
+    
+    public Cards GetCards () {
+        return cards;
     }
 }

@@ -28,6 +28,9 @@ public class MyApp : Gtk.Application {
             flags: ApplicationFlags.FLAGS_NONE
         );
     }
+    
+    Gtk.InfoBar info_bar;
+    Gtk.Label info_label;
 
     protected override void activate () {
         var css_provider = new Style().GetCssProvider ();
@@ -41,25 +44,55 @@ public class MyApp : Gtk.Application {
         var main_window = new Gtk.ApplicationWindow (this) {
             title = _("Stocks"),
             resizable = false,
-            default_height = 480
+            default_height = 480,
+            default_width = 400
         };
+        
+        main_window.get_style_context ().add_class ("main");
 
         var header = new Gtk.HeaderBar ();
         header.set_show_close_button (true);
         header.set_title ("Simple Stocks");
         main_window.set_titlebar (header);
+        
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.show ();
+        main_window.add (box);
+        
+        info_bar = new Gtk.InfoBar ();
+        info_bar.message_type = Gtk.MessageType.WARNING;
+        info_label = new Gtk.Label ("Warning");
+        info_bar.get_content_area ().add (info_label);
+        info_bar.set_show_close_button (true);
+        info_bar.add_button ("Try Again", 0);
+        info_bar.set_revealed (false);
+        box.pack_start (info_bar, false, true, 0);
 
         var grid = new CardGrid ();
 
-        var cards = new Cards (grid);
+        var cards = new Cards (grid, this);
         cards.AddCard ("empty");
         
         Gtk.ScrolledWindow scroll_view = new Gtk.ScrolledWindow (null, null);
         scroll_view.hscrollbar_policy = Gtk.PolicyType.NEVER;
         scroll_view.add (grid);
         
-        main_window.add (scroll_view);
+        box.pack_start (scroll_view, true, true, 0);
         main_window.show_all ();
+        
+        var timeout = Timeout.add (60000, () => {
+            cards.UpdateCardData ();
+            return true;
+        });
+    }
+    
+    public void ShowInfoBar (string message) {
+        info_label.set_text (message);
+        info_bar.set_revealed (true);
+    }
+    
+    private void UpdateData (Cards cards) {
+        cards.UpdateCardData ();
     }
 
     public static int main (string[] args) {
