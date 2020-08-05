@@ -43,21 +43,25 @@ public class MyApp : Gtk.Application {
             default_height = 480,
             default_width = 400
         };
-        
-        main_window.get_style_context ().add_class ("main");
 
         var header = new Gtk.HeaderBar ();
         header.set_show_close_button (true);
         header.set_title (_("Simple Stocks"));
         
-        // var gtk_settings = Gtk.Settings.get_default ();
+        var gtk_settings = Gtk.Settings.get_default ();
 
-        // var mode_switch = new Granite.ModeSwitch.from_icon_name ("display-brightness-symbolic", "weather-clear-night-symbolic");
-        //   mode_switch.primary_icon_tooltip_text = _("Light background");
-        //   mode_switch.secondary_icon_tooltip_text = _("Dark background");
-        //   mode_switch.bind_property ("active", gtk_settings, "gtk_application_prefer_dark_theme");
-        // 
-        // header.pack_end (mode_switch);
+        var mode_switch = new Granite.ModeSwitch.from_icon_name ("display-brightness-symbolic", "weather-clear-night-symbolic");
+          mode_switch.primary_icon_tooltip_text = _("Light background");
+          mode_switch.secondary_icon_tooltip_text = _("Dark background");
+          mode_switch.bind_property ("active", gtk_settings, "gtk_application_prefer_dark_theme");
+          mode_switch.valign = Gtk.Align.CENTER;
+          
+        var preferences_button_icon = new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR);
+        var preferences_button = new Gtk.ToolButton (preferences_button_icon, null);
+        preferences_button.tooltip_text = _("Preferences");
+        
+        header.pack_end (mode_switch);
+        header.pack_start (preferences_button);
         
         main_window.set_titlebar (header);
         

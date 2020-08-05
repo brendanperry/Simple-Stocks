@@ -36,14 +36,15 @@ public class Style {
     
     private string GetCss () {
         return (
-        """
-            .main {
-                background-color: white;
-            }
-            
+        """  
             .card {
                 border-radius: 5px;
-                background-color: #FDF6E3;
+
+            }
+            
+            .card-black {
+                border-radius: 5px;
+                background-color: gray;
             }
             
             .ticker {
