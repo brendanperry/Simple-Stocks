@@ -27,9 +27,11 @@ public class StockCard: Gtk.Box {
     private Cards cards;
     private Gtk.Entry entry;
     private int index;
+    private string key;
 
-    public StockCard(string ticker, Cards cards) {
+    public StockCard(string ticker, Cards cards, string price = "$0.00", string percent = "+0.00%", string key) {
         this.cards = cards;
+        this.key = key;
         set_orientation (Gtk.Orientation.VERTICAL);
         this.get_style_context ().add_class ("card");
 
@@ -38,7 +40,7 @@ public class StockCard: Gtk.Box {
         if (ticker == "empty") {
             CreateEmptyCard (cards);
         } else {
-            CreateNewCard (ticker, cards);
+            CreateNewCard (ticker, cards, price, percent);
         }
     }
 
@@ -83,7 +85,7 @@ public class StockCard: Gtk.Box {
         add (box);
     }
 
-    private void CreateNewCard (string ticker, Cards cards) {
+    private void CreateNewCard (string ticker, Cards cards, string price, string percent) {
         var event_box = new Gtk.EventBox ();
         
         event_box.button_press_event.connect (() => {
@@ -109,15 +111,15 @@ public class StockCard: Gtk.Box {
         box.set_spacing (10);
         
         var ticker_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-        tickerLabel = new Gtk.Label (ticker);
+        tickerLabel = new Gtk.Label (ticker.ascii_up (ticker.length));
         ticker_box.add (tickerLabel);
         ticker_box.get_style_context ().add_class ("ticker");
         ticker_box.show ();
         
         box.add (ticker_box);
 
-        priceLabel = new Gtk.Label ("$0.00");
-        percentageLabel = new Gtk.Label ("+0.00%");
+        priceLabel = new Gtk.Label (price);
+        percentageLabel = new Gtk.Label (percent);
 
         var box_price = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
         box_price.set_spacing (20);
@@ -154,13 +156,23 @@ public class StockCard: Gtk.Box {
         return priceLabel.get_text ();
     }
     
+    public string GetTicker () {
+        return tickerLabel.get_text ();
+    }
+    
+    public string GetPercentage () {
+        return percentageLabel.get_text ();
+    }
+    
     public void UpdatePercentage (string percent) {
         percentageLabel.set_text (percent);
+        // save cards now because the percent is only updated after the price
+        Local.SaveCards (cards.GetCards ()); 
     }
 
     public void UpdatePrice () {
         if (tickerLabel.get_text () != "Add New") {
-            api.HttpGet (this, tickerLabel.get_text (), "key");
+            api.HttpGet (this, tickerLabel.get_text (), key);
         }
     }
 

@@ -22,7 +22,6 @@
 public class GetApiData {
     public void HttpGet (StockCard card, string ticker, string key) {
         //key = "Tpk_e1eb49050d7c403496493e757960f5f2"; // sandbox key
-        key = "pk_6c967fa2c1154e178644dc481cd95bc4";
         var session = new Soup.Session ();
         
         var price_message = GetData (ticker, key, "latestPrice");
