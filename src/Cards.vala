@@ -1,10 +1,10 @@
 public class Cards {
     private Array<StockCard> cards;
     CardGrid grid;
-    MyApp app;
+    MainPage app;
     private string key;
     
-    public Cards (CardGrid grid, MyApp app, string key) {
+    public Cards (CardGrid grid, MainPage app, string key) {
         cards = new Array<StockCard> ();
         this.app = app;
         this.grid = grid;
@@ -60,7 +60,7 @@ public class Cards {
         return (int) cards.length;
     }
     
-    public MyApp GetApp () {
+    public MainPage GetApp () {
         return app;
     }
 }

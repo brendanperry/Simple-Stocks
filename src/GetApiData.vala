@@ -76,29 +76,36 @@ public class GetApiData {
 
     private void HandleError (int status, StockCard card) {
         string message;
+        string type;
         
         switch (status) {
             case 400:
                 message = "Incorrect Values";
+                type = "Warning";
                 break;
             case 402:
                 message = "API Limit Reached";
+                type = "Warning";
                 break;
             case 403:
                 message = "Invalid API Token";
+                type = "Error";
                 break;
             case 404: 
                 message = "Resource Not Found";
+                type = "Warning";
                 break;
             case 500:
                 message = "Server Failure";
+                type = "Error";
                 break;
             default:
                 message = "Something Went Wrong";
+                type = "Warning";
                 break;
         }
         
-        card.GetCards ().GetApp ().ShowInfoBar (message);
+        card.GetCards ().GetApp ().ShowInfoBar (message, type);
     }
 
     private string Round (string price) {

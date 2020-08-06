@@ -93,6 +93,7 @@ public class StockCard: Gtk.Box {
             pop.set_modal (true);
             
             var button = new Gtk.Button.with_label ("Remove");
+            button.get_style_context ().add_class ("destructive-action");
             
             button.clicked.connect (() => {
 		        cards.Remove (GetIndex ());

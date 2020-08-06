@@ -39,12 +39,17 @@ public class Style {
         """  
             .card {
                 border-radius: 5px;
-
             }
             
-            .card-black {
-                border-radius: 5px;
-                background-color: gray;
+            .white {
+                background-color: white;
+                padding: 10px;
+            }
+            
+            .gray-text {
+                color: gray;
+                padding: 10px;
+                margin-top: 60px;
             }
             
             .ticker {
