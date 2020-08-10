@@ -19,13 +19,16 @@
 * Authored by: Author <bperry@hey.com>
 */
 
-public class MyApp : Gtk.Application {
-    public MyApp () {
+public class Application : Gtk.Application {
+    public Application () {
         Object (
             application_id: "com.github.brendanperry.stocks",
             flags: ApplicationFlags.FLAGS_NONE
         );
     }
+    
+    Gtk.Window landing_page;
+    Gtk.Window main_page;
 
     protected override void activate () {
         var css_provider = new Style().GetCssProvider ();
@@ -36,12 +39,40 @@ public class MyApp : Gtk.Application {
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         );
         
-        add_window (new LandingPage());
-        //add_window (new MainPage());
+        landing_page = new LandingPage (this);
+        main_page = new MainPage (this);
+        
+        var api_key = new ApiKey ();
+
+        if (api_key.Get () == "no-key-found") {
+            add_window (landing_page);
+            landing_page.show_all ();
+        } else {
+            add_window (main_page);
+            main_page.show_all ();
+        }
+    }
+    
+    public void OpenMain () {
+        remove_window (landing_page);
+        landing_page.destroy ();
+        
+        main_page = new MainPage (this);
+        add_window (main_page);
+        main_page.show_all ();
+    }
+    
+    public void OpenLanding () {
+        remove_window (main_page);
+        main_page.destroy ();
+        
+        landing_page = new LandingPage (this);
+        add_window (landing_page);
+        landing_page.show_all ();
     }
 
     public static int main (string[] args) {
-        return new MyApp ().run (args);
+        return new Application ().run (args);
     }
 }
 

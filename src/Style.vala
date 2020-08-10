@@ -47,7 +47,7 @@ public class Style {
             }
             
             .gray-text {
-                color: gray;
+                background-color: white;
                 padding: 10px;
                 margin-top: 60px;
             }

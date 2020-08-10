@@ -34,9 +34,7 @@ public class Cards {
         }
     }
     
-    public void Remove (int index) {    
-        print ("%d", index);
-        
+    public void Remove (int index) {         
         for (int i = 0; i < cards.length; i++) {
             grid.remove (cards.index (i));
         }

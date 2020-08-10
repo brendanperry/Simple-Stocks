@@ -7,6 +7,15 @@ add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), la
 executable(
     meson.project_name(),
     'src/Application.vala',
+    'src/MainPage.vala',
+    'src/LandingPage.vala',
+    'src/CardGrid.vala',
+    'src/Cards.vala',
+    'src/Local.vala',
+    'src/StockCard.vala',
+    'src/Style.vala',
+    'src/GetApiData.vala',
+    'src/ApiKey.vala',
     dependencies: [
         dependency('gtk+-3.0'),
         dependency('libsoup-2.4'),
