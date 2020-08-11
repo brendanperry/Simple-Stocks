@@ -1,0 +1,79 @@
+public class LandingPage : Gtk.Window {
+    public LandingPage (Application app) {
+        set_default_size (500, 500);
+        set_resizable (false);
+        add (new WelcomeView (app));
+    }
+}
+
+private class WelcomeView : Gtk.Grid {
+    public WelcomeView (Application app) {
+        //get_style_context ().add_class ("white");
+    
+        var welcome = new Granite.Widgets.Welcome ("Welcome", "Let's get things ready.");
+        welcome.append ("text-x-generic", "Create an Account", "Click here to get your free account with IEX Cloud.");
+        welcome.append ("security-high", "Grab Your API Token", "Click here to copy your token.");
+        attach (welcome, 0, 0);
+        
+        var container = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+        container.halign = Gtk.Align.CENTER;
+        container.set_spacing (10);
+        
+        var button = new Gtk.Button.with_label ("Continue");
+        button.sensitive = false;
+        
+        var entry = new Gtk.Entry ();
+        entry.placeholder_text = "Enter your API token.";
+        entry.set_width_chars (35);
+        container.add (entry);
+        
+        entry.get_buffer ().inserted_text.connect (() => {
+            if (entry.text_length > 20) {
+                button.sensitive = true;
+            }
+        });
+        
+        entry.backspace.connect(() => {
+           if (entry.text_length < 20) {
+                button.sensitive = false;
+            }
+        });
+        
+        container.add (button);
+        
+        button.button_press_event.connect (() => {
+            var api = new ApiKey ();
+            api.Set (entry.get_text ());
+            app.OpenMain ();
+            return true;
+        });
+        
+        attach (container, 0, 1, 1, 1);
+        
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.get_style_context ().add_class ("gray-text");
+        box.add (new Gtk.Label ("Simple Stocks is not affiliated with IEX Cloud. Please do not share your API token."));
+        attach (box, 0, 2, 1, 1);
+
+        welcome.activated.connect ((index) => {
+            switch (index) {
+                case 0:
+                    try {
+                        AppInfo.launch_default_for_uri ("https://www.iexcloud.io/cloud-login#/register", null);
+                    } catch (Error e) {
+                        warning (e.message);
+                    }
+
+                    break;
+                case 1:
+                    try {
+                        AppInfo.launch_default_for_uri ("https://iexcloud.io/console", null);
+                    } catch (Error e) {
+                        warning (e.message);
+                    }
+
+                    break;
+            }
+        });
+    }
+}

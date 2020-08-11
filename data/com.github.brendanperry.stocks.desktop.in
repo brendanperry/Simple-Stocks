@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Simple Stocks
+GenericName=Stock Viewer
+Comment=Track stock prices
+Categories=Education;
+Exec=com.github.brendanperry.stocks
+Icon=application-default-icon
+Terminal=false
+Type=Application
+Keywords=Stocks;Finance;Money;Viewer;Prices;Tracker;

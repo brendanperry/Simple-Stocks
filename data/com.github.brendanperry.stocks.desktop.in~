@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Stocks
+GenericName=Stocks Application
+Comment=Tracks stocks based on ticker
+Categories=Finance;
+Exec=com.github.yourusername.yourrepositoryname
+Icon=application-default-icon
+Terminal=false
+Type=Application
+Keywords=Stocks;Finance;

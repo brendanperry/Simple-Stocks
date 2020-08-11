@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2020 Brendan Perry <bperry@hey.com> -->
+<component type="desktop">
+  <id>com.github.brendanperry.stocks</id>
+  <metadata_license>CC0</metadata_license>
+  <name>Simple Stocks</name>
+  <summary>Simple Stock Viewer</summary>
+  <description>
+    <p>Simple Stocks give you a clean and simple way to track your favorite stocks. \n\nA free account with IEX Cloud is required.\n<a href="https://iexcloud.io">Data provided by IEX Cloud</a></p>
+  </description>
+  <custom>
+  <value key="x-appcenter-color-primary">#292929</value>
+  <value key="x-appcenter-color-primary-text">rgb(255, 255, 255)</value>
+  <value key="x-appcenter-suggested-price">0</value>
+</custom>
+</component>
