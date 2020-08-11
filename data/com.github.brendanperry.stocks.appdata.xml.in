@@ -6,7 +6,10 @@
   <name>Simple Stocks</name>
   <summary>Simple Stock Viewer</summary>
   <description>
-    <p>Simple Stocks give you a clean and simple way to track your favorite stocks. \n\nA free account with IEX Cloud is required.\n<a href="https://iexcloud.io">Data provided by IEX Cloud</a></p>
+    <p>Simple Stocks give you a clean and simple way to track your favorite stocks.</p>
+    <p>A free account with IEX Cloud is required.</p>
+    <p><a href="https://iexcloud.io">Data provided by IEX Cloud</a></p>
+    <p>Please do not use Simple Stocks as a tool to make financial decisions. Stock prices are delayed by up to 15 minutes.</p>
   </description>
   <custom>
   <value key="x-appcenter-color-primary">#292929</value>
