@@ -8,7 +8,6 @@ executable(
     meson.project_name(),
     'src/Application.vala',
     'src/MainPage.vala',
-    'src/LandingPage.vala',
     'src/CardGrid.vala',
     'src/Cards.vala',
     'src/Local.vala',
