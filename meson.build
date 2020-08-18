@@ -4,8 +4,6 @@ i18n = import('i18n')
 
 add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
 
-subdir ('src')
-
 executable(
     meson.project_name(),
     'src/Application.vala',
@@ -43,5 +41,4 @@ i18n.merge_file(
     install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
 
-subdir ('data')
 subdir('po')
