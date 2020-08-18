@@ -3,9 +3,13 @@ Section: x11
 Priority: low
 Maintainer: Brendan Perry <bperry@hey.com>
 Build-Depends: cmake (>= 2.8),
-               debhelper (>= 9),
-               libgtk-3-dev,
-               valac (>= 0.40.0)
+              debhelper (>= 9),
+              libgtk-3-dev,
+              meson,
+              valac (>= 0.40.0),
+              libgranite-dev,
+              libjson-glib-dev,
+              libsoup2.4-dev
 Standards-Version: 3.9.3
 
 Package: com.github.brendanperry.stocks
